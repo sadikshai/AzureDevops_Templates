@@ -1,0 +1,57 @@
+parameters:
+ - name: 'mainproject'
+   displayName: build dotnet
+   type: string
+   default: '**/*.csproj'
+ - name: 'Testproject'
+   displayName: Test dotnet
+   type: string
+   default: '**/*Tests.csproj'
+ - name: 'RunTests'
+   displayName: skippingtests
+   type: boolean
+   default: true
+
+
+
+
+
+
+
+
+steps:
+  
+  - task : DotNetCoreCLI@2
+    inputs:
+      command: 'build'
+      projects: ${{parameters.mainproject}}
+
+  - task : DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+      projects: ${{parameters.Testproject}}
+    condition: eq(${{ parameters.RunTests }},true)
+
+      
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish'
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: ${{parameters.mainproject}}
+      arguments: '-o $(Build.ArtifactStagingDirectory)/Output'
+      zipAfterPublish: true
+      modifyOutputPath: true
+
+
+  - task: CopyFiles@2
+    inputs:
+      Contents: '**/*.dll'
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+      OverWrite: true
+      
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: Dot
