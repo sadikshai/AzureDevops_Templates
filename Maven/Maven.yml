@@ -1,0 +1,42 @@
+parameters:
+  - name: goal
+    displayName: build
+    type: string
+    default: clean package
+  - name: testResultsFiles
+    displayName: testfile
+    type : string
+    default: '**/surefire-reports/TEST-*.xml'
+  - name: specificversion 
+    displayName: jdkVersion
+    type: string
+    default: ' '
+  - name: acrtifactpath
+    displayName: pathforartifact
+    type: string
+    default: '**/*.jar'
+
+
+
+
+
+
+
+steps:
+  - task: Maven@4
+    inputs: 
+      mavenPOMFile: 'pom.xml'
+      testResultsFiles: ${{parameters.testResultsFiles}}
+      publishJUnitResults: true
+      goals: ${{parameters.goal}}
+    condition: eq(${{parameters.specificversion}},' ')
+
+  - task: CopyFiles@2
+    inputs:
+      contents: '**/spring-petclinic*.jar'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: Drop
