@@ -29,7 +29,7 @@ steps:
       testResultsFiles: ${{parameters.testResultsFiles}}
       publishJUnitResults: true
       goals: ${{parameters.goal}}
-    condition: eq(${{ parameters.specificversion }}, ' ' )
+    condition: eq('${{ parameters.specificversion }}', ' ' )
 
   - task: CopyFiles@2
     inputs:
