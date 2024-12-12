@@ -1,0 +1,7 @@
+steps:
+  - template: './Template.yml'
+    parameters:
+      mainproject: 'src/Presentation/Nop.Web/Nop.Web.csproj'
+      Testproject: 'src/Tests/Nop.Tests/Nop.Tests.csproj'
+      RunTests: false
+      specificversion: ' '
