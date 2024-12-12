@@ -1,0 +1,29 @@
+pool: Default
+trigger: none
+pr:
+  - main
+variables:
+  - group: generic_java_maven
+
+steps:
+  - template: ./Maven.yml
+    parameters:
+      goal: $(goal)
+      testResultsFiles: $(testResultsFiles)
+      specificversion: ' '
+      acrtifactpath: $(artifactpath)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
