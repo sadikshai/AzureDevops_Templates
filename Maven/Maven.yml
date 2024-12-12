@@ -31,6 +31,14 @@ steps:
       goals: ${{parameters.goal}}
     condition: eq('${{ parameters.specificversion }}', ' ' )
 
+  - task: Maven@4
+    inputs: 
+      mavenPOMFile: 'pom.xml'
+      testResultsFiles: ${{parameters.testResultsFiles}}
+      publishJUnitResults: true
+      goals: ${{parameters.goal}}
+    condition: ne('${{ parameters.specificversion }}', ' ' )
+
   - task: CopyFiles@2
     inputs:
       contents: ${{parameters.acrtifactpath}}
