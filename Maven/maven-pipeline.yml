@@ -1,7 +1,4 @@
-pool: Default
-trigger: none
-pr:
-  - main
+
 variables:
   - group: generic_java_maven
 
