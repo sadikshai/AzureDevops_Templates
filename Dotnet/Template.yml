@@ -11,12 +11,11 @@ parameters:
    displayName: skippingtests
    type: boolean
    default: true
-
-
-
-
-
-
+ - name: 'specificversion'
+   displayName: versions_specification
+   type: string
+   default: ' '
+  
 
 
 steps:
@@ -25,6 +24,15 @@ steps:
     inputs:
       command: 'build'
       projects: ${{parameters.mainproject}}
+    condition: eq( '${{ parameters.specificversion }}',' ')
+
+  - task : DotNetCoreCLI@2
+    displayName: 'version mention'
+    inputs:
+      command: 'build'
+      projects: ${{parameters.mainproject}}
+    condition: ne( '${{ parameters.specificversion }}',' ')
+
 
   - task : DotNetCoreCLI@2
     inputs:
@@ -55,3 +63,6 @@ steps:
     inputs:
       pathToPublish: $(Build.ArtifactStagingDirectory)
       artifactName: Dot
+
+
+      
