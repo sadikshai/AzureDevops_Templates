@@ -1,0 +1,53 @@
+---
+parameters:
+  - name: artifactoryResolverService
+    type: string
+    default: JFROG_CLOUD
+  - name: targetResolveReleaseRepo
+    type: string
+    default: spring-libs-release
+  - name: targetResolveSnapshotRepo
+    type: string
+    default: spring-libs-snapshot
+  - name: artifactoryDeployService
+    type: string
+    default: JFROG_CLOUD
+  - name: targetDeployReleaseRepo
+    type: string
+    default: spring-libs-release
+  - name: targetDeploySnapshotRepo
+    type: string
+    default: spring-libs-snapshot
+  - name: artifactoryConnection
+    type: string
+    default: JFROG_CLOUD
+  
+
+
+
+
+
+
+
+
+
+
+
+steps:
+- task: JFrogMaven@1
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'install'
+    artifactoryResolverService: ${{parameters.artifactoryResolverService}}
+    targetResolveReleaseRepo: ${{parameters.targetResolveReleaseRepo}}
+    targetResolveSnapshotRepo: ${{parameters.targetResolveSnapshotRepo}}
+    artifactoryDeployService: ${{parameters.artifactoryDeployService}}
+    targetDeployReleaseRepo: ${{parameters.targetDeployReleaseRepo}}
+    targetDeploySnapshotRepo: ${{parameters.targetDeploySnapshotRepo}}
+    filterDeployedArtifacts: true
+    javaHomeOption: 'JDKVersion'
+- task: JFrogPublishBuildInfo@1
+  inputs:
+    artifactoryConnection: ${{parameters.artifactoryConnection}}
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
